@@ -6,8 +6,8 @@ from datetime import datetime
 
 diretorio_screenshots = "F:\\Projetinhos\\Projeto Dissertação\\Screenshots"
 diretorio_registro = "registro\\"
-registroON = True
-preSelect = True
+set_register_on_lauch = True
+pre_select_features = True
 
 class Componente:
     imagens = []  # Lista para manter referências às imagens
@@ -31,11 +31,11 @@ class Componente:
         self.checkbox.grid(row=row + 1, column=column, pady=0, padx=15, sticky="w")  
         self.textview.grid(row=row + 1, column=column, pady=0, padx=35, sticky="w")
 
-        # Adiciona um evento de clique à imagem
+        # Adiciona um evento de clique à imagem / texto para acionar o checkbox
         self.imageview.bind("<Button-1>", lambda event: self.acionar_checkbox())
         self.textview.bind("<Button-1>", lambda event: self.acionar_checkbox())
 
-
+    # evento para acionar o checkbox
     def acionar_checkbox(self):
         # Inverte o estado da checkbox ao ser clicado na imagem
         self.checkbox_var.set(not self.checkbox_var.get())
@@ -115,7 +115,7 @@ botao.grid(row=11, column=8, columnspan=max_componentes_por_coluna, pady=0,padx=
 
 #botão que marca se vai ser adicionado ao registro ou não
 goToRegister = tk.BooleanVar()
-goToRegister.set(registroON)
+goToRegister.set(set_register_on_lauch)
 registerCheck = ttk.Checkbutton(janela, variable=goToRegister)
 registerCheck.grid(row=11, column=8, columnspan=max_componentes_por_coluna, pady=0,padx=0,sticky="w")
 
@@ -209,7 +209,7 @@ def gravar_em_registro(texto):
     # Verificar se o arquivo existe, se não, criá-lo
     if not os.path.isfile(nome_arquivo):
         print("Arquivo de registro criado")
-        with open(nome_arquivo, "afs"):
+        with open(nome_arquivo, "w"):
             pass
 
     # Abrir o arquivo em modo de adição e gravar a linha
@@ -225,7 +225,7 @@ def premarcacao_checkbox():
     combobox.current(0)
     for componente in componentes:
             componente.checkbox_var.set(False)
-            if preSelect : 
+            if pre_select_features : 
                 if i == 3 : componente.checkbox_var.set(True) # Marcando o componente Common Button
                 if i == 6 : componente.checkbox_var.set(True) # Marcando o componente Icon Button
                 if i == 37 : componente.checkbox_var.set(True) # Marcando o componente Text View
