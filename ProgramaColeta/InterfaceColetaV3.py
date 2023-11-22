@@ -42,7 +42,7 @@ class Componente:
 
 # Crie a janela principal
 janela = tk.Tk()
-janela.title("Programa com Componentes")
+janela.title("Programa para coleta")
 
 # Substitua os caminhos reais das imagens e os textos desejados
 dados_componentes = [
@@ -111,12 +111,12 @@ for i, dados in enumerate(dados_componentes):
 # Adicione o botão "Obter Dados" e o combobox na última linha e última coluna
 #botao = ttk.Button(janela, text="printdata", command=lambda: print(obter_estado_checkboxes())) #opcao para printar no console
 botao = ttk.Button(janela, text="Copy to Clip", command=lambda: copyToClip()) #opcao para copiar para a clipboard
-botao.grid(row=11, column=8, columnspan=max_componentes_por_coluna, pady=0,padx=0)
+botao.grid(row=11, column=8, columnspan=max_componentes_por_coluna, pady=0,padx=15)
 
 #botão que marca se vai ser adicionado ao registro ou não
 goToRegister = tk.BooleanVar()
 goToRegister.set(set_register_on_lauch)
-registerCheck = ttk.Checkbutton(janela, variable=goToRegister)
+registerCheck = ttk.Checkbutton(janela, variable=goToRegister, style='TRadiobutton', text='R')
 registerCheck.grid(row=11, column=8, columnspan=max_componentes_por_coluna, pady=0,padx=20,sticky="w")
 
 #adiciona botão para resetar coleta
@@ -130,8 +130,9 @@ appNum = ttk.Entry(janela, text="0")
 appNum.grid(row=11, column=6, columnspan=max_componentes_por_coluna, pady=0,padx=75,sticky="w")
 
 #adiciona imagem arcoiris
-#imgLGBT = ttk.Label(image=tk.PhotoImage(file='imagem_lgbt.png'), compound=tk.TOP)
-#imgLGBT.grid(row=12, column=7, columnspan=max_componentes_por_coluna, pady=0,padx=0,sticky="w")
+imageTK = tk.PhotoImage(file='imagensPrograma\\imagem_lgbt.png')
+imgLGBT = ttk.Label(image=imageTK, compound=tk.TOP)
+imgLGBT.grid(row=12, column=7, columnspan=max_componentes_por_coluna, pady=0,padx=0,sticky="w")
 #falta arrumar isso aqui
 
 #adiciona botão para aumentar appnum
