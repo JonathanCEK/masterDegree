@@ -117,7 +117,7 @@ botao.grid(row=11, column=8, columnspan=max_componentes_por_coluna, pady=0,padx=
 goToRegister = tk.BooleanVar()
 goToRegister.set(set_register_on_lauch)
 registerCheck = ttk.Checkbutton(janela, variable=goToRegister)
-registerCheck.grid(row=11, column=8, columnspan=max_componentes_por_coluna, pady=0,padx=0,sticky="w")
+registerCheck.grid(row=11, column=8, columnspan=max_componentes_por_coluna, pady=0,padx=20,sticky="w")
 
 #adiciona botão para resetar coleta
 botao2 = ttk.Button(janela, text="Resetar Marcas", command=lambda: premarcacao_checkbox())
@@ -196,12 +196,12 @@ def criar_pasta():
         #print("Criação de pasta desabilitada")
         print("")
 
-def gravar_em_registro(texto):
+def gravar_em_registro(estados_checkbox):
     # Obter a data e hora atual
     data_hora_atual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Criar a string a ser gravada no arquivo
-    linha = f"{data_hora_atual}: {texto}\n"
+    # Criar a string que pega o número do aplicativo atual, a data e hora atual e os estados
+    linha = f"{str(appNum.get())}/{data_hora_atual}: {estados_checkbox}\n" 
 
     # Nome do arquivo
     nome_arquivo = diretorio_registro + "registro.txt"
