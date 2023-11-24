@@ -154,7 +154,7 @@ for i in range(max_componentes_por_coluna):
     janela.grid_rowconfigure(i, weight=1,minsize=0)
 
 def copyToClip():
-    estados = obter_estado_checkboxes()
+    estados = 'True\t' + obter_estado_checkboxes()
     
     pyperclip.copy(estados)
     print("Dado copiado para a clipboard")
