@@ -6,7 +6,7 @@ from datetime import datetime
 
 diretorio_screenshots = "F:\\Projetinhos\\Projeto Dissertação\\Screenshots"
 diretorio_registro = "registro\\"
-set_register_on_lauch = False
+set_register_on_lauch = True
 pre_select_features = True
 
 class Componente:
@@ -240,17 +240,16 @@ def gravar_em_registro(estados_checkbox):
 
 #seta os componentes da forma correta 
 def premarcacao_checkbox():
-    i = 0
+    #i = 0
     combobox.current(0)
     for componente in componentes:
             componente.checkbox_var.set(False)
-            if pre_select_features : 
-                if i == 0 : componente.checkbox_var.set(True) # Marcando o componente Common Button
-                if i == 1 : componente.checkbox_var.set(True) # Marcando o componente Icon Button
-                if i == 2 : componente.checkbox_var.set(True) # Marcando o componente Text View
-                if i == 3 : componente.checkbox_var.set(True) # Marcando o componente ImageView
-                #if i == 1 : componente.checkbox_var.set(True) # Marcando o componente 
-                i = i + 1
+
+    if pre_select_features :
+        componentes[45].checkbox_var.set(True)
+        componentes[46].checkbox_var.set(True)
+        componentes[47].checkbox_var.set(True)
+        componentes[48].checkbox_var.set(True)
 
 def obter_estado_checkboxes():
     estados = [componente.checkbox_var.get() for componente in componentes]
