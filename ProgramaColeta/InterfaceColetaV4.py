@@ -48,7 +48,7 @@ janela.title("Programa para coleta")
 dados_componentes = [
     #
     #Raramente marcados - Line 1
-    {"texto": "Pre-Loading", "imagem_path": "imagensPrograma\\imagem_acc.png"},
+    {"texto": "Pre-Loading", "imagem_path": "imagensPrograma\\imagem_pre.png"},
     {"texto": "Badges", "imagem_path": "imagensPrograma\\imagem_bad.png"},
     {"texto": "Snackbar", "imagem_path": "imagensPrograma\\imagem_25.png"},
     {"texto": "Tool tips", "imagem_path": "imagensPrograma\\imagem_30.png"},    
