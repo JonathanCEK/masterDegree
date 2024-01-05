@@ -55,72 +55,6 @@ def getAppDecriptions(driver, url1):
 
     return [shortDes, aboutApp, fulllDes,tableApp]
 
-def setPlayStore(url1):
-
-    diretorio = ""
-    playstore = ""
-    partes = url1.split('/')
-    # Verifica se existem pelo menos quatro ocorrências de "/"
-    if len(partes) >= 6:
-        # Retorna o texto após a quarta ocorrência
-        diretorio = '/'.join(partes[5:])
-        playstore = 'https://play.google.com/store/apps/details?id=' + diretorio
-        print(diretorio)
-    else:
-        # Se não houver quatro ocorrências, retorne uma string vazia ou outra mensagem de erro, conforme necessário
-        print("Erro")
-
-    return [diretorio, playstore]
-
-def extrair_caracteristicas(string):
-    # Lista de características
-    caracteristicas = [
-        "More data about",
-        "Price",
-        "Cost of in-app purchases",
-        "Total downloads",
-        "Recent downloads",
-        "Rating",
-        "Ranking",
-        "Version",
-        "APK size",
-        "Number of libraries",
-        "Designed for",
-        "Maturity",
-        "Suitable for",
-        "Ads"
-    ]
-
-    # Inicializa o vetor de valores com "N/A"
-    valores = ["N/A"] * 14
-
-    # Divide a string em linhas
-    linhas = string.split('\n')
-    
-    # Para cada linha, verifica se corresponde a alguma característica e extrai o valor
-    for linha in linhas:
-        for i, caracteristica in enumerate(caracteristicas):
-            if linha.startswith(caracteristica):
-                # Extrai o valor removendo a parte da característica
-                valores[i] = linha[len(caracteristica):].strip()
-
-    return valores
-
-def rating(string):
-    valores = []
-
-    if string != 'No ratings':
-        valores = string.split(' based on ')
-        valores[1] = valores[1].replace(' ratings', '')
-
-    return valores
-
-def noAndroid(string):
-    text =  []
-    if string.startswith('Android '):
-        text.append(string.replace('Android ', ''))
-        text[0] = text[0].replace('+', '')
-    return text
 
 
 def getAppTecRankCom(driver, url1):
@@ -248,59 +182,6 @@ def getAlllllllll(driver, url1):
 
     return infos
 
-def offOrganizer():
-
-    #service = Service()
-    #options = webdriver.EdgeOptions()
-    #options.add_argument("--headless") #não renderiza interface gráfica
-    #driver = webdriver.Edge(service=service, options=options)
-    # Nome do arquivo Excel a ser lido e atualizado
-    path = "F:\\Projetinhos\\Projeto Dissertação\\PythonColetaDados\\"
-    nome = "totalInfoComplete"
-    extension = ".xlsx"
-
-    linhaInicial = 3
-    countLinha = linhaInicial
-    
-    finalValue = 1
-
-    selectCol = 22
-    firtWritingCol = 22
-
-
-
-
-    #inicialmente ele abre um app com acesso restrito, apenas para deixar sinalizado que quero acessar esses apps
-    #driver.get('https://www.appbrain.com/app/beechat-dating-nearby/th.cyberapp.beechat')
-    #time.sleep(5)
-
-    # Abre o arquivo Excel
-    workbook = openpyxl.load_workbook(path + nome + extension)
-    sheet = workbook.active
-
-    # Itera pelas linhas na primeira coluna do arquivo Excel
-    for row in sheet.iter_rows(min_row=linhaInicial, max_row=sheet.max_row, min_col=selectCol, max_col=selectCol):
-        if countLinha == finalValue: break
-        for cell in row:
-            texto = cell.value
-            countLinha = countLinha + 1
-            #print(texto)
-            if texto is not None:
-                # Obtém os valores da função processarTexto
-                #valores = extrair_caracteristicas(texto)
-                valores = noAndroid(texto)
-
-                # Atualiza as colunas 2 a 5 com os valores retornados
-                for i, val in enumerate(valores, start=firtWritingCol):
-                    sheet.cell(row=cell.row, column=i, value=val)
-
-                #print(countLinha)
-
-    # Salva as alterações de volta no arquivo Excel
-    workbook.save(path + nome + extension)
-
-    print("Organização finalizada.")
-
 
 def listaInfo():
     service = Service()
@@ -378,6 +259,5 @@ def listaInfo():
     print("Coleta finalizada.")
 
 
-#listaInfo()
+listaInfo()
 
-offOrganizer()
