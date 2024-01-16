@@ -65,6 +65,24 @@ def extrair_caracteristicas(string):
 
     return valores
 
+def converter_para_numero(string):
+    if(string == "") : return [""]
+    # Mapeia os sufixos para os fatores correspondentes
+    sufixos = {'billion': 1_000_000_000, 'million': 1_000_000, 'thousand': 1_000}
+
+    # Divide a string em partes (número e sufixo, se existir)
+    partes = string.split()
+
+    # Converte a parte numérica para float
+    numero_str = partes[0].replace(',', '')  # Remove vírgulas, se houver
+    numero = float(numero_str)
+
+    # Multiplica pelo fator correspondente ao sufixo, se existir
+    if len(partes) > 1:
+        numero *= sufixos[partes[1]]
+
+    return [str(int(numero))]
+
 def separate_tech(string):
 
     # Divide a string em linhas
@@ -118,9 +136,9 @@ def noPerm(string):
         string
 
 def remover_primeira_linha(texto):
-    linhas = texto.split('Development tools\n', 1)
+    linhas = texto.split('Description\n', 1)
     if len(linhas) > 1:
-        return [linhas[0]]
+        return [linhas[1]]
     else:
         return ['N/A']
 
@@ -157,7 +175,67 @@ def processar_string(string, lista_fixa):
 
     return lista_resultado
 
-def offOrganizer():
+import re
+def extrair_trechos(texto):
+    # Expressões regulares para os dois trechos de texto
+    padrao1 = re.compile(r' is (.*?)app developed by ')
+    padrao2 = re.compile(r'app developed by (.*?)\. The APK')
+
+    # Procura pelos padrões no texto
+    resultado1 = re.search(padrao1, texto)
+    resultado2 = re.search(padrao2, texto)
+
+    # Extrai os trechos correspondentes
+    trecho1 = resultado1.group(1) if resultado1 else None
+    trecho2 = resultado2.group(1) if resultado2 else None
+
+    return [trecho1, trecho2]
+
+
+def formatar_texto(texto):
+    # Lista de prefixos a serem removidos
+    prefixos = ["a ", "an "]
+
+    # Verifica se o texto possui algum dos prefixos
+    for prefixo in prefixos:
+        if texto.startswith(prefixo):
+            # Remove o prefixo e capitaliza a primeira letra de cada palavra
+            palavras = texto[len(prefixo):].split()
+            texto_formatado = ' '.join(word.capitalize() for word in palavras)
+            return [texto_formatado]
+
+    # Se nenhum prefixo for encontrado, retorna o texto original
+    return [texto]
+
+def categorizar_linhas(string):
+    positivos = ""
+    negativos = ""
+
+    # Separa as linhas
+    linhas = string.split('\n')
+
+    for linha in linhas:
+        if linha.startswith('★★☆☆☆ '):
+            if negativos != "":
+                negativos = negativos + "\n"
+            negativos = negativos + linha.replace('★★☆☆☆ ', '')
+        elif linha.startswith('★★★★★ '):
+            if positivos != "":
+                positivos = positivos + "\n"
+            positivos = positivos + linha.replace('★★★★★ ', '')
+
+    # Se as listas estiverem vazias, atribui "N/A"
+    if positivos == "":
+        positivos = "N/A"
+    if negativos  == "":
+        negativos = "N/A"
+
+    return [positivos, negativos]
+
+def tirarVirgulas(texto):
+    return [texto.replace(', ', '\n')]
+
+def offOrganizer(selected, writed):
 
     #service = Service()
     #options = webdriver.EdgeOptions()
@@ -173,8 +251,10 @@ def offOrganizer():
     
     finalValue = 1
 
-    selectCol = 29
-    firtWritingCol = 33
+    #coluna que o texto será selecionado
+    selectCol = selected
+    #primeira coluna que será escrita
+    firtWritingCol = writed
 
 
 
@@ -187,7 +267,7 @@ def offOrganizer():
     workbook = openpyxl.load_workbook(path + nome + extension)
     sheet = workbook.active
 
-    lista_geral = ['Development tools', 'Network communication', 'Storage', 'Hardware controls', 'System tools',  'Your accounts', 'Your location', 'Your personal information', 'Phone calls', 'Services that cost you money', 'Your messages', 'Extra']
+    #lista_geral = ['Development tools', 'Network communication', 'Storage', 'Hardware controls', 'System tools',  'Your accounts', 'Your location', 'Your personal information', 'Phone calls', 'Services that cost you money', 'Your messages', 'Extra']
 
     # Itera pelas linhas na primeira coluna do arquivo Excel
     for row in sheet.iter_rows(min_row=linhaInicial, max_row=sheet.max_row, min_col=selectCol, max_col=selectCol):
@@ -200,8 +280,11 @@ def offOrganizer():
                 # Obtém os valores da função processarTexto
                 #valores = extrair_caracteristicas(texto)
                 #valores = remover_primeira_linha(texto)
-                valores = processar_string(texto, lista_geral)
+                #valores = processar_string(texto, lista_geral)
 
+                #valores = formatar_texto(texto)
+                #valores = categorizar_linhas(texto)
+                valores = converter_para_numero(texto)
                 #looping para adicionar os elementos em valores às colunas da tabela
                 for i, val in enumerate(valores, start=firtWritingCol):
                     sheet.cell(row=cell.row, column=i, value=val)
@@ -210,13 +293,28 @@ def offOrganizer():
 
     # Salva as alterações de volta no arquivo Excel
     workbook.save(path + nome + extension)
-    print(lista_geral)
+
     print("Organização finalizada.")
 
+offOrganizer(15,50)
+offOrganizer(16,51)
+offOrganizer(26,52)
 
-offOrganizer()
+
+
+
+
+
+
+
+# Exemplo de uso converter_para_numero(string)
+#strings_exemplo = ["1.1 billion", "12 million", "7.6 million", "230 thousand", "370", ""]
+#for string in strings_exemplo:
+#    resultado = converter_para_numero(string)[0]
+#    print(f"{string}: {resultado}")
     
 
 
 
+#print(tirarVirgulas("""approximate (network-based) location, precise (GPS) location""")[0])
 
